@@ -7,3 +7,20 @@ body {
   color: #212121;
   line-height: 1.5;
 }
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.photo-card {
+  display: flex;
+  flex-direction: column;
+  width: calc((100% - 90px)/4);
+}
+
+.photo {
+  height: 300px;
+  object-fit: cover;
+}
