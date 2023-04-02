@@ -1,45 +1,36 @@
 // 'use strict';
 import axios from 'axios';
 
-export function fetchGalleryCard(seekedCard) {
-  const BASE_URL = 'https://pixabay.com/api/';
-  const API_KEY = '34958715-9ce4ce8564d7b2e391d81a960';
+export class PixabaiAPI {
+  #BASE_URL = 'https://pixabay.com/api/';
+  #API_KEY = '34958715-9ce4ce8564d7b2e391d81a960';
 
-  let page = 1;
+  page = 1;
+  query = null;
 
-  return axios.get(`${BASE_URL}`, {
-    params: {
-      key: `${API_KEY}`,
-      q: `${seekedCard}`,
-      image_type: 'photo',
-      orientation: 'horizontal',
-      safesearch: 'true',
-      page,
-      per_page: 40,
-    },
-  });
+  async fetchCard() {
+    try {
+      return axios.get(`${this.#BASE_URL}`, {
+        params: {
+          key: this.#API_KEY,
+          q: this.query,
+          image_type: 'photo',
+          orientation: 'horizontal',
+          safesearch: 'true',
+          page: this.page,
+          per_page: 40,
+        },
+      });
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+
+  resetPage() {
+    this.page = 1;
+  }
+
+  incrementPage() {
+    this.page += 1;
+  }
 }
-
-// export class PixabaiAPI {
-//   #BASE_URL = 'https://pixabay.com/api/';
-//   #API_KEY = '34958715-9ce4ce8564d7b2e391d81a960';
-
-//   page = 1;
-
-//   fetchCard() {
-//     return axios.get(
-//       `${this.#BASE_URL}?key=${
-//         this.#API_KEY
-//       }$q=${seekedCard}$image_type=photo&orientation=horizontal&safesearch=true`
-//     );
-//   }
-// }
-
-//   return fetch(
-//     `${BASE_URL}?key=${API_KEY}$q=${seekedCard}&image_type=photo&orientation=horizontal&safesearch=true`
-//   ).then(response => {
-//     if (!response.ok) {
-//       throw new Error(response.status);
-//     }
-//     return response.json();
-//   });
