@@ -6,7 +6,9 @@ export class PixabaiAPI {
   #API_KEY = '34958715-9ce4ce8564d7b2e391d81a960';
 
   page = 1;
+  per_page = 40;
   query = null;
+  totalImages = null;
 
   async fetchCard() {
     try {
@@ -18,7 +20,7 @@ export class PixabaiAPI {
           orientation: 'horizontal',
           safesearch: 'true',
           page: this.page,
-          per_page: 40,
+          per_page: this.per_page,
         },
       });
     } catch (err) {
@@ -32,5 +34,13 @@ export class PixabaiAPI {
 
   incrementPage() {
     this.page += 1;
+  }
+
+  setTotal(total) {
+    this.totalImages = total;
+  }
+
+  hasMoreImages() {
+    return this.page < Math.ceil(this.totalImages / this.per_page);
   }
 }
