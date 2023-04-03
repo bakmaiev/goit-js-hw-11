@@ -2,7 +2,8 @@ export function createMarkup(cards) {
   return cards
     .map(card => {
       return `<div class="photo-card">
-  <img class="photo" src="${card.webformatURL}" data-source="${card.largeImageURL}" alt="${card.tags}" loading="lazy" />
+  <a class="photo-card-item" href="${card.largeImageURL}">
+  <img class="photo-card-image" src="${card.webformatURL}" alt="${card.tags}" loading="lazy" />
   <div class="info">
     <p class="info-item">
       <b>Likes: ${card.likes}</b>
@@ -16,7 +17,7 @@ export function createMarkup(cards) {
     <p class="info-item">
       <b>Downloads: ${card.downloads}</b>
     </p>
-  </div>
+  </div></a>
 </div>`;
     })
     .join('');

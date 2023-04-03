@@ -1,9 +1,13 @@
 'use strict';
-
-import '../css/styles.css';
 import Notiflix from 'notiflix';
-import { PixabaiAPI, fetchGalleryCard } from './fetchGalleryCard';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+import '../css/styles.css';
+
+import { PixabaiAPI } from './fetchGalleryCard';
 import { createMarkup } from './createMarkup';
+
+const lightbox = new SimpleLightbox('.photo-card a', { captionDelay: 250 });
 
 const searchFormEl = document.querySelector('.search-form');
 const galleryListEl = document.querySelector('.gallery');
