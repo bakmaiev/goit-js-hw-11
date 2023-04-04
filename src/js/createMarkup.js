@@ -2,7 +2,7 @@ export function createMarkup(cards) {
   return cards
     .map(card => {
       return `<div class="photo-card">
-  <a class="photo-card-item" href="${card.largeImageURL}">
+  <a class="photo-card-link" href="${card.largeImageURL}">
   <img class="photo-card-image" src="${card.webformatURL}" alt="${card.tags}" loading="lazy" />
   <div class="info">
     <p class="info-item">

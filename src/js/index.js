@@ -1,6 +1,7 @@
 'use strict';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
+import InfiniteScroll from 'infinite-scroll';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import '../css/styles.css';
 
@@ -18,13 +19,13 @@ const pixabaiAPI = new PixabaiAPI();
 
 const handleSearchFormEl = async e => {
   e.preventDefault();
+  resetGalleryMarkup();
 
-  const seekedCard = e.target.elements['searchQuery'].value;
+  const seekedCard = e.target.elements['searchQuery'].value.trim();
   pixabaiAPI.query = seekedCard;
   pixabaiAPI.resetPage();
 
   if (!seekedCard) {
-    galleryListEl.innerHTML = '';
     return Notiflix.Notify.failure('Enter something.');
   }
 
@@ -39,6 +40,7 @@ const handleSearchFormEl = async e => {
     galleryListEl.innerHTML = createMarkup(data.hits);
     loadMoreBtnEl.classList.remove('visually-hidden');
     pixabaiAPI.setTotal(data.totalHits);
+    lightbox.refresh();
     return Notiflix.Notify.success(`Done! We found ${data.totalHits} images.`);
   } catch (err) {
     console.log;
@@ -55,7 +57,7 @@ const handleSearchFormEl = async e => {
 const handleloadMoreBtnEl = async e => {
   e.preventDefault();
 
-  const seekedCard = searchFormEl.elements['searchQuery'].value;
+  const seekedCard = searchFormEl.elements['searchQuery'].value.trim();
   pixabaiAPI.query = seekedCard;
   pixabaiAPI.incrementPage();
 
@@ -69,9 +71,27 @@ const handleloadMoreBtnEl = async e => {
   try {
     const { data } = await pixabaiAPI.fetchCard();
     galleryListEl.insertAdjacentHTML('beforeend', createMarkup(data.hits));
+    lightbox.refresh();
+    pageScrolling();
   } catch (err) {
     console.log;
   }
+};
+
+const resetGalleryMarkup = () => {
+  galleryListEl.innerHTML = '';
+  loadMoreBtnEl.classList.add('visually-hidden');
+};
+
+const pageScrolling = () => {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
 };
 
 searchFormEl.addEventListener('submit', handleSearchFormEl);
